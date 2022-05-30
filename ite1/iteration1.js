@@ -24,3 +24,25 @@ const pgcd = (a,b) => { if (b === 0) { return a; } let r; b !== 0 ? r = a % b : 
 // 6 Formule fibonacci en itératif
 let x = 0; let y = 1; let z;
 const fibo = (n) => { if (n < 2 ){ return n; } for (let i = 1; i < n; i++) { z = x + y; x = y; y = z; } return z; }; console.log("Résultat fibonacci (itératif) : "+fibo(8));
+
+// Tri tableau
+console.log([3,9,7,1,6,2,8,4,5]);
+
+const tri = (list) => {
+    for(let i = 0; i < list.length; i++){
+        //stocker l'index de l'élément minimum
+        let min = i;
+        for(let j = i+1; j < list.length; j++){
+            if (list[j] < list[min]){
+                // mettre à jour l'index de l'élément minimum
+                min = j;
+            }
+        }
+        let indexList = list[i];
+        list[i] = list[min];
+        list[min] = indexList;
+    }
+    return list;
+};
+let tab = [3,550,7,1,6,42,8,4,5];
+console.log(tri(tab));
