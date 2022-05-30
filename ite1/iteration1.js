@@ -6,7 +6,7 @@ const f = (n) => { if(n === 1) {return 1;} return f(n-1)*n;}; console.log("Résu
 
 //3. Écrivez une fonction récursive qui retourne la valeur Fn d’un nombre n, passé en paramètre.
 
-const ff = (n) => { n > 1 ? n = ff(n-1)+ff(n-2) : ''; return n; }; console.log("Résultat fibonacci de n : "+ff(8));
+const ff = (n) => { n > 1 ? n = ff(n-1)+ff(n-2) : ''; return n; }; console.log("Résultat fibonacci de n (récursif): "+ff(8));
 
 //4.1 Écrivez une fonction récursive qui retourne la valeur Ui d’un nombre n, passé en paramètre.
 
@@ -20,3 +20,7 @@ const Uu = (N,i) => { if (i === 0) { return N; } let n = Uu(N,i-1); n % 2 === 0 
 // 5 Écrivez une fonction récursive qui retourne la valeur pgcd(a, b)
 
 const pgcd = (a,b) => { if (b === 0) { return a; } let r; b !== 0 ? r = a % b : ''; return pgcd(b,r); }; console.log("Résultat pgcd : "+pgcd(200,300));
+
+// 6 Formule fibonacci en itératif
+let x = 0; let y = 1; let z;
+const fibo = (n) => { if (n < 2 ){ return n; } for (let i = 1; i < n; i++) { z = x + y; x = y; y = z; } return z; }; console.log("Résultat fibonacci (itératif) : "+fibo(8));
