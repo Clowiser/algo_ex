@@ -1,6 +1,4 @@
-
 // Converts from degrees to radians.
-import {csv, partition} from "./lib/d3.min";
 
 function deg2rad(deg) {
   return deg * (Math.PI/180)
@@ -26,10 +24,7 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 function distanceFromGrenoble(city) {
   // Latitude de Grenoble	45.188529
   // Longitude de Grenoble	5.724524
-  let allDist =  getDistanceFromLatLonInKm(city.latitude, city.longitude, 45.188529,5.724524);
-
-  console.log(allDist);
-  return allDist;
+  return getDistanceFromLatLonInKm(city.latitude, city.longitude, 45.188529, 5.724524);
 }
 
 
@@ -110,16 +105,44 @@ function shellsort() {
       for (let j = i, k= j-gap; k >= 0 && isLess(j, k) ; j -= gap, k-= gap){
         swap(j, k);
       }
+      // ou sans la variable k
+      // for (var j = i; j >= gap && isLess(j,j-gap); j -= gap) {
+      //   swap(j, j-gap);
+      // }
     }
   }
 }
 
 // -----------------------------------
+function merge(first, second,length = N - 1){
+  // debugger;
+   let firstPart = first === second;
+   let secondPart = second-first === length;
 
-function mergesort(start=0, length=N) {
-  console.log("mergesort - implement me !");
+   if (firstPart || secondPart){
+     return;
+   }
+
+   if (isLess(first,second)){
+     merge(first +1, second,length - 1);
+   } else {
+     for (let i = second;i >= first; i--){
+         swap(i, first);
+     }
+     merge(first +1,second +1, length -1);
+   }
 }
 
+function mergesort(start = 0,length = N-1){
+
+  if (length > 1){
+    let mid = Math.floor(length/2);
+    mergesort(start,mid);
+    mergesort(start+mid, length-mid);
+    merge(start,start+mid, length);
+  }
+
+}
 // -----------------------------------
 
 function heapsort() {
@@ -127,32 +150,25 @@ function heapsort() {
 }
 
 // -----------------------------------
-function part(arr, start, end){
-  const pivotValue = arr[end];
-  let pivotIndex = start;
+function part(left, right){
+  let pIndex = left;
 
-  for (let i = start; i < csvData.length; i++){
-    if (isLess(arr[i],pivotValue)) {
-      swap(arr[i], arr[pivotIndex])
-      pivotIndex++;
+  for (let i = left; i <= right; i++){
+    if (isLess(i, right)){
+      swap(pIndex, i)
+      pIndex++;
     }
   }
-
-  [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]];
-  return pivotIndex;
+  swap(pIndex, right)
+  return pIndex;
 }
-function quicksort(arr,start,end) {
-  let index = part(arr,start,end);
-  quicksort(arr,start, index - 1);
-  quicksort(arr, index + 1,end);
-
-  // if(first<last) {
-  //   const pivot = partition(first, last, selectPivot(first, last));
-  //   quicksort(first, pivot-1);
-  //   quicksort(pivot+1, last);
-  // }
+function quicksort(left = 0,right = csvData.length - 1) {
+  if(left < right) {
+    let pivot = part(left, right);
+    quicksort(left, pivot - 1);
+    quicksort(pivot + 1, right);
+  }
 }
-
 // -----------------------------------
 
 function sort(algo)
