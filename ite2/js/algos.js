@@ -114,8 +114,7 @@ function shellsort() {
 }
 
 // -----------------------------------
-function merge(first, second,length = N - 1){
-  // debugger;
+function merge(first, second,length){
    let firstPart = first === second;
    let secondPart = second-first === length;
 
@@ -124,16 +123,16 @@ function merge(first, second,length = N - 1){
    }
 
    if (isLess(first,second)){
-     merge(first +1, second,length - 1);
+     merge(first +1, second,length -1);
    } else {
-     for (let i = second;i >= first; i--){
-         swap(i, first);
+     for (let i = second;i >= first + 1; i --){
+         swap(i, i - 1);
      }
      merge(first +1,second +1, length -1);
    }
 }
 
-function mergesort(start = 0,length = N-1){
+function mergesort(start = 0,length = N){
 
   if (length > 1){
     let mid = Math.floor(length/2);
@@ -144,9 +143,36 @@ function mergesort(start = 0,length = N-1){
 
 }
 // -----------------------------------
+function createHeap(){
+  for (let i = Math.floor(N/2); i >= 0; i--){
+    cram(N,i);
+  }
+}
 
+function cram(end, index){
+  let left = 2 * index + 1;
+  let right = 2 * index + 2;
+  let max = index;
+
+  if (right < end && isLess(max,right)){
+    max = right;
+  }
+
+  if (left < end && isLess(max, left)){
+    max = left;
+  }
+
+  if (index !== max){
+    swap(max, index);
+    cram(end,max);
+  }
+}
 function heapsort() {
-  console.log("heapsort - implement me !");
+  createHeap()
+  for (let i = N - 1; i >= 0; i--){
+    swap(0,i);
+    cram(i,0);
+  }
 }
 
 // -----------------------------------
