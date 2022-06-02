@@ -45,9 +45,7 @@ function swap(i,j) {
 function isLess(i, j) {
   displayBuffer.push(['compare', i, j]); // Do not delete this line (for display)
 
-  if(csvData[i].dist < csvData[j].dist){
-    return true;
-  }
+  if(csvData[i].dist < csvData[j].dist){ return true; }
 }
 
 // -----------------------------------
@@ -72,12 +70,7 @@ function selectionsort() {
 
     let min = csvData[i].dist;
     let iMin = i;
-    for (let j = i + 1; j < csvData.length ; j++){
-      if (isLess(j,iMin) === true){
-          min = csvData[j];
-          iMin = j;
-      }
-    }
+    for (let j = i + 1; j < csvData.length ; j++){ isLess(j,iMin) === true ? (min = csvData[j] , iMin = j) : ''; }
     swap(iMin,i);
   }
 }
@@ -86,11 +79,7 @@ function selectionsort() {
 
 function bubblesort() {
   for(let i = 0; i < csvData.length; i++){
-    for(let j = i+1; j < csvData.length; j++){
-      if (isLess(j,i) === true){
-        swap(i,j);
-      }
-    }
+    for(let j = i+1; j < csvData.length; j++){ isLess(j,i) === true ? swap(i,j) : ''; }
   }
 }
 
@@ -98,32 +87,24 @@ function bubblesort() {
 
 const gaps = [701, 301, 132, 57, 23, 10, 4, 1];
 function shellsort() {
-  // debugger;
   for (let g = 0; g < gaps.length; g++){
     let gap = gaps[g];
     for (let i = gap; i < csvData.length; i++){
-      for (let j = i, k= j-gap; k >= 0 && isLess(j, k) ; j -= gap, k-= gap){
-        swap(j, k);
-      }
+      for (let j = i, k= j-gap; k >= 0 && isLess(j, k) ; j -= gap, k-= gap){ swap(j, k); }
       // ou sans la variable k
-      // for (var j = i; j >= gap && isLess(j,j-gap); j -= gap) {
-      //   swap(j, j-gap);
-      // }
+      // for (var j = i; j >= gap && isLess(j,j-gap); j -= gap) { swap(j, j-gap); }
     }
   }
 }
 
 // -----------------------------------
 function merge(first, second,length){
-   let firstPart = first === second;
-   let secondPart = second-first === length;
+   let firstPart = first === second , secondPart = second-first === length;
 
-   if (firstPart || secondPart){
-     return;
-   }
+   if (firstPart || secondPart){ return; }
 
    if (isLess(first,second)){
-     merge(first +1, second,length -1);
+     merge(first + 1, second,length - 1);
    } else {
      for (let i = second;i >= first + 1; i --){
          swap(i, i - 1);
@@ -133,67 +114,36 @@ function merge(first, second,length){
 }
 
 function mergesort(start = 0,length = N){
-
-  if (length > 1){
-    let mid = Math.floor(length/2);
-    mergesort(start,mid);
-    mergesort(start+mid, length-mid);
-    merge(start,start+mid, length);
-  }
-
+  let mid;
+  (length > 1) && ( mid = Math.floor(length/2), mergesort(start,mid), mergesort(start+mid, length-mid), merge(start,start+mid, length));
 }
 // -----------------------------------
 function createHeap(){
-  for (let i = Math.floor(N/2); i >= 0; i--){
-    cram(N,i);
-  }
+  for (let i = Math.floor(N/2); i >= 0; i--){ cram(N,i); }
 }
 
 function cram(end, index){
-  let left = 2 * index + 1;
-  let right = 2 * index + 2;
-  let max = index;
-
-  if (right < end && isLess(max,right)){
-    max = right;
-  }
-
-  if (left < end && isLess(max, left)){
-    max = left;
-  }
-
-  if (index !== max){
-    swap(max, index);
-    cram(end,max);
-  }
+  let left = 2 * index + 1 , right = 2 * index + 2 , max = index;
+  (right < end && isLess(max,right)) && (max = right);
+  (left < end && isLess(max, left)) && (max = left);
+  (index !== max) && (swap(max, index) , cram(end,max));
 }
+
 function heapsort() {
   createHeap()
-  for (let i = N - 1; i >= 0; i--){
-    swap(0,i);
-    cram(i,0);
-  }
+  for (let i = N - 1; i >= 0; i--){ (swap(0,i), cram(i,0))}
 }
 
 // -----------------------------------
 function part(left, right){
   let pIndex = left;
-
-  for (let i = left; i <= right; i++){
-    if (isLess(i, right)){
-      swap(pIndex, i)
-      pIndex++;
-    }
-  }
-  swap(pIndex, right)
+  for (let i = left; i <= right; i++){ (isLess(i, right)) && (swap(pIndex, i), pIndex++); }
+  swap(pIndex, right);
   return pIndex;
 }
 function quicksort(left = 0,right = csvData.length - 1) {
-  if(left < right) {
-    let pivot = part(left, right);
-    quicksort(left, pivot - 1);
-    quicksort(pivot + 1, right);
-  }
+  let pivot;
+  (left < right) && (pivot = part(left, right), quicksort(left, pivot - 1), quicksort(pivot + 1, right));
 }
 // -----------------------------------
 
