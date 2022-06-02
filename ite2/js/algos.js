@@ -53,35 +53,26 @@ function isLess(i, j) {
 
 function insertsort() {
   for (let i = 1; i < csvData.length; i++){
-    let j = i;
-    let k = j - 1;
-    while ( k >= 0 && isLess(j, k)){
-      swap(k, j);
-      j--;
-      k--;
-    }
+    let j = i, k = j - 1;
+    while ( k >= 0 && isLess(j, k)){ (swap(k, j), j--, k--) }
   }
 }
 
 // -----------------------------------
 
 function selectionsort() {
-  for (let i = 0; i < csvData.length; i++){
-
-    let min = csvData[i].dist;
-    let iMin = i;
-    for (let j = i + 1; j < csvData.length ; j++){ isLess(j,iMin) === true ? (min = csvData[j] , iMin = j) : ''; }
-    swap(iMin,i);
+  for (let i = 0; i < csvData.length; i++) {
+    let min = csvData[i].dist, iMin = i;
+    for (let j = i + 1; j < csvData.length; j++) {
+      (isLess(j, iMin)) && (min = csvData[j] , iMin = j);
+    }
+    swap(iMin, i);
   }
 }
 
 // -----------------------------------
 
-function bubblesort() {
-  for(let i = 0; i < csvData.length; i++){
-    for(let j = i+1; j < csvData.length; j++){ isLess(j,i) === true ? swap(i,j) : ''; }
-  }
-}
+function bubblesort() { for(let i = 0; i < csvData.length; i++){ for(let j = i+1; j < csvData.length; j++){ (isLess(j,i)) && swap(i,j); } } }
 
 // -----------------------------------
 
@@ -100,7 +91,6 @@ function shellsort() {
 // -----------------------------------
 function merge(first, second,length){
    let firstPart = first === second , secondPart = second-first === length;
-
    if (firstPart || secondPart){ return; }
 
    if (isLess(first,second)){
@@ -114,8 +104,8 @@ function merge(first, second,length){
 }
 
 function mergesort(start = 0,length = N){
-  let mid;
-  (length > 1) && ( mid = Math.floor(length/2), mergesort(start,mid), mergesort(start+mid, length-mid), merge(start,start+mid, length));
+  let mid = Math.floor(length/2);
+  (length > 1) && ( mid , mergesort(start,mid), mergesort(start+mid, length-mid), merge(start,start+mid, length));
 }
 // -----------------------------------
 function createHeap(){
