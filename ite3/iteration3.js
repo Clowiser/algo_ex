@@ -15,7 +15,7 @@ const displayMaze = (width, way) => {
         const cell = maze[i];
         let div = document.createElement('div');
         div.className = 'little';
-        // div.setAttribute('id', '' + i);
+        div.setAttribute('id', '' + i);
         cont.appendChild(div);
 
        cell.entrance === true && (div.style.background = 'orange', entrance = cell );
@@ -55,6 +55,8 @@ selectWay.addEventListener('change', function (){
 
 function test (maze, entrance) {
     let S = [];
+    let number = 0;
+    let path = [];
 
     S.push(entrance);
 
@@ -63,24 +65,22 @@ function test (maze, entrance) {
 
         if (v.visited !== true){
             v.visited = true;
-            // v.div.style.background = 'pink';
+            v.div.innerHTML = number++;
         }
 
         if (v.exit === true){
-            return 'Sortie trouvée.'
+            return console.log(path);
         }
 
-        getNeighbours(v)
+        for (const w of getNeighbours(v) ){
+            console.log(w);
+            if (w.visited !== true){
 
-        // for (let w = [] ; ;){
-        //     if (w.visited !== true){
-        //         S.push(w);
-        //     }
-        // }
-        console.log(v)
+                S.push(w);
+            }
+        }
     }
 }
-
 
 function getNeighbours(cell){
     const neighbours = [];
@@ -102,37 +102,26 @@ function getNeighbours(cell){
 }
 
 function getTop(cell){
-    let x = cell.posX;
-    let y = cell.posY -1;
-
-    return maze[y*size+x];
-}
-function getRight(cell){
-    let x = cell.posX +1;
-    let y = cell.posY;
-
-    return maze[y*size+x];
-}
-function getBottom(cell){
-    let x = cell.posX;
-    let y = cell.posY +1;
-
-    return maze[y*size+x];
-}
-function getLeft(cell){
     let x = cell.posX -1;
     let y = cell.posY;
 
-    return maze[y*size+x];
+    return maze[x*size+y];
 }
+function getRight(cell){
+    let x = cell.posX;
+    let y = cell.posY +1;
 
-// let positionX;
-// let positionY;
-// let cell;
-// for (let i = 0; i < maze; i++){
-//     cell = maze[i];
-//     if (cell.entrance === true){
-//         positionX = cell.posX;
-//         positionY = cell.posY;
-//     }
-// }
+    return maze[x*size+y];
+}
+function getBottom(cell){
+    let x = cell.posX +1;
+    let y = cell.posY;
+
+    return maze[x*size+y];
+}
+function getLeft(cell){
+    let x = cell.posX;
+    let y = cell.posY -1;
+
+    return maze[x*size+y];
+}
